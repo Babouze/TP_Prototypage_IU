@@ -15,7 +15,6 @@
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints />
       <RowConstraints maxHeight="319.0" minHeight="319.0" prefHeight="319.0" />
       <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
       <RowConstraints />
@@ -24,7 +23,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="567.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
+      <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="567.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Téléchargement">
                <content>
@@ -55,11 +54,6 @@
             </Tab>
         </tabs>
       </TabPane>
-      <ToolBar prefHeight="40.0" prefWidth="200.0">
-         <items>
-            <ChoiceBox prefWidth="150.0" />
-         </items>
-      </ToolBar>
    </children>
    <padding>
       <Insets left="10.0" top="40.0" />
