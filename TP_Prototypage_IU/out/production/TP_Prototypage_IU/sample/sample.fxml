@@ -30,20 +30,20 @@
                <content>
                   <Pane prefHeight="335.0" prefWidth="558.0">
                      <children>
-                        <TextField layoutX="14.0" layoutY="43.0" prefHeight="27.0" prefWidth="447.0" promptText="Sélectionner" />
-                        <Button layoutX="471.0" layoutY="43.0" mnemonicParsing="false" text="Parcourir..." />
+                        <TextField fx:id="pathInput" layoutX="14.0" layoutY="43.0" prefHeight="27.0" prefWidth="447.0" promptText="Sélectionner" text="/Users/adrien/Google\ Drive/Cours/S2/Prototypage\ et\ interface\ utilisateur/TP/TP_Prototypage_IU/pages/" />
+                        <Button disable="true" layoutX="471.0" layoutY="43.0" mnemonicParsing="false" text="Parcourir..." />
                         <Label layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="329.0" text="Répertoire de sauvegarde" />
                         <Pane layoutX="14.0" layoutY="90.0" prefHeight="164.0" prefWidth="542.0" style="-fx-border-width: 1px; -fx-border-color: grey; -fx-border-radius: 4px;">
                            <children>
-                              <TextField layoutX="16.0" layoutY="41.0" prefHeight="27.0" prefWidth="514.0" promptText="Adresse du site" />
+                              <TextField fx:id="urlInput" layoutX="16.0" layoutY="41.0" prefHeight="27.0" prefWidth="514.0" promptText="Adresse du site" text="http://github.com/lostape/testing/blob/master/HTTrack.java" />
                               <Label layoutX="16.0" layoutY="14.0" text="URL de la page à télécharger" />
                               <Label layoutX="75.0" layoutY="85.0" text="Récursivité du téléchargement (profondeur)" />
                               <CheckBox layoutX="16.0" layoutY="118.0" mnemonicParsing="false" text="Inclure les images et les vidéos" />
                               <ChoiceBox layoutX="14.0" layoutY="80.0" prefHeight="27.0" prefWidth="50.0" />
                            </children>
                         </Pane>
-                        <Button layoutX="464.0" layoutY="267.0" mnemonicParsing="false" onAction="#launchProgressBar" text="Télécharger" />
-                        <ProgressBar fx:id="downloadBar" layoutX="14.0" layoutY="271.0" prefHeight="20.0" prefWidth="440.0" progress="0.0" />
+                        <Button layoutX="464.0" layoutY="267.0" mnemonicParsing="false" onAction="#download" text="Télécharger" />
+                        <ProgressBar fx:id="downloadBar" layoutX="14.0" layoutY="271.0" prefHeight="20.0" prefWidth="440.0" progress="0.0" visible="false" />
                      </children>
                   </Pane>
                </content>
@@ -60,18 +60,12 @@
                             <TitledPane animated="false" text="untitled 2" />
                           </panes>
                         </Accordion>
-                        <ProgressBar layoutX="20.0" layoutY="264.0" prefHeight="20.0" prefWidth="440.0" progress="0.0" />
-                        <Button layoutX="479.0" layoutY="260.0" mnemonicParsing="false" text="Annuler" />
+                        <ProgressBar fx:id="downloadBarB" layoutX="20.0" layoutY="264.0" prefHeight="20.0" prefWidth="440.0" progress="0.0" />
                      </children></Pane>
                </content>
             </Tab>
         </tabs>
       </TabPane>
-      <ToolBar prefHeight="40.0" prefWidth="200.0">
-         <items>
-            <ChoiceBox prefWidth="150.0" />
-         </items>
-      </ToolBar>
    </children>
    <padding>
       <Insets left="10.0" top="40.0" />
