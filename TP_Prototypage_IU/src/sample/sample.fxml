@@ -42,15 +42,27 @@
                               <ChoiceBox layoutX="14.0" layoutY="80.0" prefHeight="27.0" prefWidth="50.0" />
                            </children>
                         </Pane>
-                        <Button layoutX="464.0" layoutY="267.0" mnemonicParsing="false" text="Télécharger" />
-                        <ProgressBar layoutX="14.0" layoutY="271.0" prefHeight="20.0" prefWidth="440.0" progress="0.0" />
+                        <Button layoutX="464.0" layoutY="267.0" mnemonicParsing="false" onAction="#launchProgressBar" text="Télécharger" />
+                        <ProgressBar fx:id="downloadBar" layoutX="14.0" layoutY="271.0" prefHeight="20.0" prefWidth="440.0" progress="0.0" />
                      </children>
                   </Pane>
                </content>
             </Tab>
           <Tab text="Bibliothèque">
                <content>
-                  <Pane prefHeight="200.0" prefWidth="200.0" />
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TextField layoutX="43.0" layoutY="14.0" prefHeight="27.0" prefWidth="482.0" promptText="Recherche..." />
+                        <ProgressIndicator layoutX="528.0" layoutY="14.0" prefHeight="27.0" prefWidth="25.0" />
+                        <Accordion layoutX="20.0" layoutY="57.0" prefHeight="199.0" prefWidth="525.0">
+                          <panes>
+                            <TitledPane animated="false" text="untitled 1" />
+                            <TitledPane animated="false" text="untitled 2" />
+                          </panes>
+                        </Accordion>
+                        <ProgressBar layoutX="20.0" layoutY="264.0" prefHeight="20.0" prefWidth="440.0" progress="0.0" />
+                        <Button layoutX="479.0" layoutY="260.0" mnemonicParsing="false" text="Annuler" />
+                     </children></Pane>
                </content>
             </Tab>
         </tabs>
