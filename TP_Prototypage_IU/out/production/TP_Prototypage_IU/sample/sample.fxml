@@ -35,7 +35,7 @@
                         <Label layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="329.0" text="Répertoire de sauvegarde" />
                         <Pane layoutX="14.0" layoutY="90.0" prefHeight="164.0" prefWidth="542.0" style="-fx-border-width: 1px; -fx-border-color: grey; -fx-border-radius: 4px;">
                            <children>
-                              <TextField fx:id="urlInput" layoutX="16.0" layoutY="41.0" prefHeight="27.0" prefWidth="514.0" promptText="Adresse du site" text="http://github.com/lostape/testing/blob/master/HTTrack.java" />
+                              <TextField fx:id="urlInput" layoutX="16.0" layoutY="41.0" prefHeight="27.0" prefWidth="514.0" promptText="Adresse du site" text="http://e-uapv2016.univ-avignon.fr/" />
                               <Label layoutX="16.0" layoutY="14.0" text="URL de la page à télécharger" />
                               <Label layoutX="75.0" layoutY="85.0" text="Récursivité du téléchargement (profondeur)" />
                               <CheckBox layoutX="16.0" layoutY="118.0" mnemonicParsing="false" text="Inclure les images et les vidéos" />

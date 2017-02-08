@@ -5,9 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
-
 import java.io.*;
-import java.net.URL;
 
 public class Controller
 {
@@ -42,14 +40,16 @@ public class Controller
                 String site[] = urlInput.getText().split("/");
                 String host = site[2];
 
+                System.out.println(host);
+
                 //Building sites directory structure; Exclude last element in site (filename)
                 String directories = "";
-                for(int i = 2; i < site.length - 1; i++){
+                for(int i = 2; i < site.length - 1; i++) {
                     directories += site[i] + "/";
                 }
 
                 //TODO: convertir les espaces en '\ '
-                directories = pathInput.getText() + directories;
+//                directories = pathInput.getText() + directories;
 
                 File folders = new File(directories);
                 folders.mkdirs();

@@ -18,8 +18,10 @@ public class HTTrack {
         OutputStreamWriter out = new OutputStreamWriter(mysocket.getOutputStream());
         Scanner in = new Scanner(mysocket.getInputStream(), "UTF-8");
 
-        out.write("GET " + directory.replace(hostname, "") + pathname + " HTTP/1.0\r\nhost: " + hostname + "\r\n\r\n");
+        out.write("GET https://" + directory.replace(hostname, "") + pathname + " HTTP/1.0\r\nHost : " + hostname + "\r\nAccept : text/html\r\nIf-Modified-Since : Saturday, 26-March-2010 08:17:01 GMT\r\nUser-Agent : Mozilla/5.0\n\r\n");
         out.flush();
+
+        System.out.println("GET " + directory.replace(hostname, "") + pathname + " HTTP/1.0\r\nHost: " + hostname + "\r\nAccept : text/html\r\nIf-Modified-Since : Saturday, 26-March-2010 08:17:01 GMT\r\nUser-Agent : Mozilla/5.0\n\r\n");
 
         //If pathname contains directories, create them
         String splitpath[] = pathname.split("/");
