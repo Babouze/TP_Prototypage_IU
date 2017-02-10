@@ -25,7 +25,7 @@ public class HTTrack {
             newdirectories += splitpath[i] + "/";
         }
 
-        new File(newdirectories).mkdirs();
+        boolean ret = new File(newdirectories).mkdirs();
         FileOutputStream page = new FileOutputStream(new File(directory + pathname)); //filename is at the end of path
 
         //Reading and scanning input stream
@@ -56,7 +56,7 @@ public class HTTrack {
                     }
                     //Download absolute links of the same host
                     else {
-                        String link[] = line.split("href=\"");
+                        String link[] = line.split("/");
                         //hostname is in link[2]
                         for(int j=0; j < link.length; j++) {
                             if(link[j].contentEquals(hostname)){

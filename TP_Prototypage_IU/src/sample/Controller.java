@@ -48,7 +48,8 @@ public class Controller
                     directories += site[i] + "/";
                 }
 
-                directories = pathInput.getText() + directories;
+                //TODO: convertir les espaces en '\ '
+//                directories = pathInput.getText() + directories;
 
                 File folders = new File(directories);
                 folders.mkdirs();
