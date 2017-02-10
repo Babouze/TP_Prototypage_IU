@@ -56,7 +56,9 @@ public class Controller
 
                 String path = site[site.length - 1];
 
-                downloader.scanAndDownload(path, host, directories, 0);
+//                String http = urlInput.getText().split("/")[0];
+
+                downloader.scanAndDownload(urlInput.getText(), path, host, directories, 0);
 //                url = new URL(urlInput.getText());
 //                is = url.openStream();  // throws an IOException
 //                br = new BufferedReader(new InputStreamReader(is));
