@@ -15,7 +15,6 @@ public class HTTrack {
         BufferedReader in;
 
         url = new URL(p_url);
-        System.out.println("URL : " + p_url);
         is = url.openStream();  // throws an IOException
         in = new BufferedReader(new InputStreamReader(is));
 
@@ -26,7 +25,7 @@ public class HTTrack {
             newdirectories += splitpath[i] + "/";
         }
 
-        new File(newdirectories).mkdirs();
+        boolean ret = new File(newdirectories).mkdirs();
         FileOutputStream page = new FileOutputStream(new File(directory + pathname)); //filename is at the end of path
 
         //Reading and scanning input stream
