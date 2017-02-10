@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class HTTrack {
 
-    public static void scanAndDownload(String p_url, String pathname, String hostname, String directory, int depth) throws IOException
+    public void scanAndDownload(String p_url, String pathname, String hostname, String directory, int depth) throws IOException
     {
         URL url;
         InputStream is;
@@ -25,7 +25,7 @@ public class HTTrack {
             newdirectories += splitpath[i] + "/";
         }
 
-        boolean ret = new File(newdirectories).mkdirs();
+        new File(newdirectories).mkdirs();
         FileOutputStream page = new FileOutputStream(new File(directory + pathname)); //filename is at the end of path
 
         //Reading and scanning input stream
@@ -46,11 +46,12 @@ public class HTTrack {
                     //Check if link is absolute or relative
                     if(!line.contains("http")){
                         //filename will be in between " marks and will be in link[1]
-                        String link[] = line.split("\"");
+                        String link[] = line.split("href=\"");
 
                         //Recursively call scanAndDownload with new filename
-                        if(depth < 2){
-                            scanAndDownload(p_url, link[1], hostname, directory, depth + 1);
+                        if(depth > 0){
+                            if(!p_url.split("://")[0].equals(hostname + pathname))
+                                scanAndDownload(p_url, link[1].split("\"")[0], hostname, directory, depth - 1);
                         }
                     }
                     //Download absolute links of the same host
@@ -65,7 +66,7 @@ public class HTTrack {
                                     newdir += link[i];
                                 }
                                 //TODO: mettre le newdir
-                                scanAndDownload(p_url, link[j].split("\"")[0], hostname, directory, depth + 1);
+                                scanAndDownload(p_url, link[j].split("\"")[0], hostname, directory, depth);
                             }
                         }
                     }

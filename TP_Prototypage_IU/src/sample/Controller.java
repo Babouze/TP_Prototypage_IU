@@ -51,32 +51,17 @@ public class Controller
                 directories = pathInput.getText() + directories;
 
                 File folders = new File(directories);
-                boolean ret = folders.mkdirs();
+                folders.mkdirs();
 
                 String path = site[site.length - 1];
 
 //                String http = urlInput.getText().split("/")[0];
 
-                downloader.scanAndDownload(urlInput.getText(), path, host, directories, 0);
-//                url = new URL(urlInput.getText());
-//                is = url.openStream();  // throws an IOException
-//                br = new BufferedReader(new InputStreamReader(is));
-//
-//                PrintWriter writer = new PrintWriter(pathInput.getText() + "url1.html", "UTF-8");
-//
-//                while ((line = br.readLine()) != null)
-//                {
-//                    writer.println(line);
-//                }
-//                writer.close();
+                downloader.scanAndDownload(urlInput.getText(), path, host, directories, 3);
             }
             catch (Exception ioe)
             {
                 ioe.printStackTrace();
-            }
-            finally
-            {
-//                    if (is != null) is.close();
             }
 
             btn.setText("Annuler");

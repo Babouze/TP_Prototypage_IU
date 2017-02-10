@@ -175,7 +175,7 @@ public class HTTrack_complex {
             stop = s.indexOf("\"", start +6 );
             url = s.substring(start +6, stop);
             //System.out.println("line 105 url " + url);
-            if (url.contains("http") == false) { //avoid dling yahoo link
+            if (!url.contains("http")) { //avoid dling yahoo link
                 //Creating a link
                 URL user_input = new URL("http://" +composeLink +url);
                 String links = user_input.toString();
