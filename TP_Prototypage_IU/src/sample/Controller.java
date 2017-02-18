@@ -1,19 +1,19 @@
 package sample;
 
 import javafx.beans.property.*;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import java.io.*;
+import java.util.Optional;
 
 public class Controller
 {
-    private DoubleProperty downloadProgress;
-
     public Controller()
     {
-        downloadProgress = new SimpleDoubleProperty(0.0);
+
     }
 
     @FXML
@@ -23,21 +23,21 @@ public class Controller
         ProgressBar pb = (ProgressBar) sc.lookup("#downloadBar");
         ProgressBar pb2 = (ProgressBar) sc.lookup("#downloadBarB");
 
-        if(btn.getText().equals("Télécharger"))
-        {
-            TextField pathInput = ((TextField) sc.lookup("#pathInput"));
-            TextField urlInput = ((TextField) sc.lookup("#urlInput"));
-            ChoiceBox depthCB = ((ChoiceBox) sc.lookup("#depth"));
+        TextField pathInput = ((TextField) sc.lookup("#pathInput"));
+        TextField urlInput = ((TextField) sc.lookup("#urlInput"));
+        ChoiceBox depthCB = ((ChoiceBox) sc.lookup("#depth"));
 
-            try
-            {
-                HTTrack downloader = new HTTrack();
+        //Splits website given into parts separated by "/"
+        String site[] = urlInput.getText().split("/");
+        String host = site[2];
 
-                //Splits website given into parts separated by "/"
-                String site[] = urlInput.getText().split("/");
-                String host = site[2];
+        String path = site[site.length - 1];
 
-                System.out.println(host);
+//                String http = urlInput.getText().split("/")[0];
+
+        Task<Void> task = new Task<Void>() {
+            @Override protected Void call() throws IOException, InterruptedException {
+                updateProgress(10, 100);
 
                 //Building sites directory structure; Exclude last element in site (filename)
                 String directories = "";
@@ -51,30 +51,61 @@ public class Controller
                 File folders = new File(directories);
                 folders.mkdirs();
 
-                String path = site[site.length - 1];
+                updateProgress(50, 100);
 
-//                String http = urlInput.getText().split("/")[0];
-
+                HTTrack downloader = new HTTrack();
                 downloader.scanAndDownload(urlInput.getText(), path, host, directories, Integer.valueOf(depthCB.getValue().toString()));
+                return null;
             }
-            catch (Exception ioe)
-            {
-                ioe.printStackTrace();
-            }
+        };
+        task.setOnSucceeded(e -> {
+            ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Succès");
+            dialog.setContentText("Téléchargement terminé");
+            dialog.getDialogPane().getButtonTypes().add(loginButtonType);
+            dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
 
+            pb.setVisible(false);
+            pb2.setVisible(false);
+            btn.setText("Télécharger");
+
+            dialog.showAndWait();
+        });
+        task.setOnFailed(e -> {
+            ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Erreur");
+            dialog.setContentText("Téléchargement échoué");
+            dialog.getDialogPane().getButtonTypes().add(loginButtonType);
+            dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
+
+            pb.setVisible(false);
+            pb2.setVisible(false);
+            btn.setText("Télécharger");
+
+            dialog.showAndWait();
+        });
+        task.setOnCancelled(e -> {
+            //TODO: Effacer le fichier téléchargé et arrêter l'exécution
+            pb.setVisible(false);
+            pb2.setVisible(false);
+            btn.setText("Télécharger");
+        });
+
+        if(btn.getText().equals("Télécharger"))
+        {
             btn.setText("Annuler");
-            pb.progressProperty().bind(downloadProgress);
-            pb2.progressProperty().bind(downloadProgress);
+            pb.progressProperty().bind(task.progressProperty());
+            pb2.progressProperty().bind(task.progressProperty());
             pb.setVisible(true);
             pb2.setVisible(true);
-            downloadProgress.setValue(downloadProgress.getValue() + 0.1);
+
+            new Thread(task).start();
         }
         else
         {
-            btn.setText("Télécharger");
-            pb.setVisible(false);
-            pb2.setVisible(false);
-            downloadProgress.setValue(downloadProgress.getValue() - 0.05);
+            task.cancel();
         }
     }
 }
