@@ -25,10 +25,6 @@ public class Controller
 
         if(btn.getText().equals("Télécharger"))
         {
-//            URL url;
-//            InputStream is = null;
-//            BufferedReader br;
-//            String line;
             TextField pathInput = ((TextField) sc.lookup("#pathInput"));
             TextField urlInput = ((TextField) sc.lookup("#urlInput"));
             ChoiceBox depthCB = ((ChoiceBox) sc.lookup("#depth"));
@@ -49,8 +45,8 @@ public class Controller
                     directories += site[i] + "/";
                 }
 
-                //TODO: convertir les espaces en '\ '
-//                directories = pathInput.getText() + directories;
+                //NOTE: Pas besoin d'échapper les espaces, mkdirs le gère déjàs
+                directories = pathInput.getText() + directories;
 
                 File folders = new File(directories);
                 folders.mkdirs();
