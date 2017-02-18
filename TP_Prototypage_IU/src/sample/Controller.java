@@ -31,6 +31,7 @@ public class Controller
 //            String line;
             TextField pathInput = ((TextField) sc.lookup("#pathInput"));
             TextField urlInput = ((TextField) sc.lookup("#urlInput"));
+            ChoiceBox depthCB = ((ChoiceBox) sc.lookup("#depth"));
 
             try
             {
@@ -58,7 +59,7 @@ public class Controller
 
 //                String http = urlInput.getText().split("/")[0];
 
-                downloader.scanAndDownload(urlInput.getText(), path, host, directories, 3);
+                downloader.scanAndDownload(urlInput.getText(), path, host, directories, Integer.valueOf(depthCB.getValue().toString()));
             }
             catch (Exception ioe)
             {
