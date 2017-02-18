@@ -8,10 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
-import org.omg.CORBA.Object;
-
 import java.io.File;
-import java.util.ArrayList;
 
 public class Main extends Application {
 

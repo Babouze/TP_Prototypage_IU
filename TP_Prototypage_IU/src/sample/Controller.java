@@ -1,13 +1,15 @@
 package sample;
 
-import javafx.beans.property.*;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import java.io.*;
-import java.util.Optional;
+
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class Controller
 {
@@ -107,5 +109,21 @@ public class Controller
         {
             task.cancel();
         }
+    }
+
+    @FXML
+    private void pathChooser(ActionEvent event) {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+
+        Button choose = (Button) event.getSource();
+        Scene sc = choose.getScene();
+        Stage stage = (Stage) sc.getWindow();
+        TextField pathInput = ((TextField) sc.lookup("#pathInput"));
+        if(pathInput.getText().equals(""))
+            dirChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        else
+            dirChooser.setInitialDirectory(new File(pathInput.getText()));
+        File path = dirChooser.showDialog(stage);
+        pathInput.setText(path.getPath() + "/");
     }
 }
