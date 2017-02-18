@@ -39,12 +39,14 @@ public class Main extends Application {
         TreeItem<String> rootItem = createLine("Bibliothèque");
         TreeView<String> tree = new TreeView<>(rootItem);
 
+        tree.setPrefSize(475, 200);
+
         File repo = new File(pathGet);
 
         File[] fileList = repo.listFiles();
 
         if(fileList != null) {
-            TreeItem<String> mainLine = null;
+            TreeItem<String> mainLine;
 
             for(int i = 0 ; i < fileList.length ; i++) {
                 String nameFile = fileList[i].toString();

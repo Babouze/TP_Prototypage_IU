@@ -6,9 +6,7 @@ import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import java.io.*;
-
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class Controller
@@ -29,8 +27,43 @@ public class Controller
         TextField urlInput = ((TextField) sc.lookup("#urlInput"));
         ChoiceBox depthCB = ((ChoiceBox) sc.lookup("#depth"));
 
+        if(pathInput.getText().equals(""))
+        {
+            ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Erreur");
+            dialog.setContentText("Veuillez choisir un endroit où enregistrer le fichier");
+            dialog.getDialogPane().getButtonTypes().add(loginButtonType);
+            dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
+            dialog.showAndWait();
+            return;
+        }
+        else if(urlInput.getText().equals(""))
+        {
+            ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Erreur");
+            dialog.setContentText("Veuillez saisir une adresse");
+            dialog.getDialogPane().getButtonTypes().add(loginButtonType);
+            dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
+            dialog.showAndWait();
+            return;
+        }
+
         //Splits website given into parts separated by "/"
         String site[] = urlInput.getText().split("/");
+        if(site.length < 2)
+        {
+            ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Erreur");
+            dialog.setContentText("L'adresse que vous avez entrée semble être incorrecte. Elle doit être au format suivant : http://example.com/");
+            dialog.getDialogPane().getButtonTypes().add(loginButtonType);
+            dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
+            dialog.showAndWait();
+            return;
+        }
+
         String host = site[2];
 
         String path = site[site.length - 1];
@@ -53,10 +86,11 @@ public class Controller
                 File folders = new File(directories);
                 folders.mkdirs();
 
-                updateProgress(50, 100);
-
                 HTTrack downloader = new HTTrack();
+                updateProgress(50, 100);
                 downloader.scanAndDownload(urlInput.getText(), path, host, directories, Integer.valueOf(depthCB.getValue().toString()));
+                updateProgress(90, 100);
+
                 return null;
             }
         };
@@ -64,7 +98,7 @@ public class Controller
             ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
             Dialog<String> dialog = new Dialog<>();
             dialog.setTitle("Succès");
-            dialog.setContentText("Téléchargement terminé");
+            dialog.setContentText("Téléchargement terminé. L'arborescence a été ajoutée à votre bibliothèque");
             dialog.getDialogPane().getButtonTypes().add(loginButtonType);
             dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
 
@@ -78,7 +112,7 @@ public class Controller
             ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
             Dialog<String> dialog = new Dialog<>();
             dialog.setTitle("Erreur");
-            dialog.setContentText("Téléchargement échoué");
+            dialog.setContentText("Téléchargement échoué, vérifiez votre connexion internet et l'URL avant de réessayer");
             dialog.getDialogPane().getButtonTypes().add(loginButtonType);
             dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
 
@@ -95,6 +129,8 @@ public class Controller
             btn.setText("Télécharger");
         });
 
+        Thread thread = new Thread(task);
+
         if(btn.getText().equals("Télécharger"))
         {
             btn.setText("Annuler");
@@ -103,11 +139,12 @@ public class Controller
             pb.setVisible(true);
             pb2.setVisible(true);
 
-            new Thread(task).start();
+            thread.start();
         }
         else
         {
             task.cancel();
+            thread.interrupt();
         }
     }
 
