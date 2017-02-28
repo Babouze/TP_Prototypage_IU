@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -33,6 +34,7 @@ public class Controller implements Initializable
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Locale locale;
                 Scene sc = language.getScene();
+                TextField pathInput = (TextField) sc.lookup("#pathInput");
                 if(newValue.equals(0)) {
                     locale = new Locale("fr" , "FR");
                     bundle = ResourceBundle.getBundle("MessagesBundle", locale);
@@ -41,7 +43,7 @@ public class Controller implements Initializable
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    createTreeView(sc,"pages", bundle);
+                    createTreeView(sc,pathInput.getText(), bundle);
                 }
                 else if(newValue.equals(1)) {
                     locale = new Locale("en" , "US");
@@ -51,7 +53,7 @@ public class Controller implements Initializable
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    createTreeView(sc,"pages", bundle);
+                    createTreeView(sc,pathInput.getText(), bundle);
                 }
                 else if(newValue.equals(2)) {
                     locale = new Locale("ch" , "CH");
@@ -61,7 +63,7 @@ public class Controller implements Initializable
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    createTreeView(sc,"pages", bundle);
+                    createTreeView(sc,pathInput.getText(), bundle);
                 }
             }
         });
@@ -237,6 +239,8 @@ public class Controller implements Initializable
             dirChooser.setInitialDirectory(new File(pathInput.getText()));
         File path = dirChooser.showDialog(stage);
         pathInput.setText(path.getPath() + "/");
+
+        createTreeView(sc, path.getPath() + "/", bundle);
     }
 
     @FXML
@@ -269,24 +273,62 @@ public class Controller implements Initializable
         }
 
         TextField pathInput = ((TextField) sc.lookup("#pathInput"));
-
-        realPath = pathInput.getText() + "/" + realPath;
-        System.out.println(realPath);
+        realPath = pathInput.getText() + realPath;
 
         // Creating the web view to display the page
         WebView browser = new WebView();
-
-        URL url = getClass().getClassLoader().getResource(realPath);
-
-        browser.getEngine().load(realPath);
+        browser.getEngine().load("file:" + realPath);
 
         dialog.getDialogPane().setContent(browser);
-
         dialog.show();
     }
 
     @FXML
     private void btnDeletePage(ActionEvent event) {
         System.out.println("Bouton delete cliqué");
+
+        Button btn = (Button) event.getSource();
+        Scene sc = btn.getScene();
+
+        // Getting the entire path of the file
+        TreeView<String> tree = (TreeView<String>) sc.lookup("#treeBibli");
+        TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
+
+        String realPath = selectedItem.getValue();
+
+        while (selectedItem.getParent().getValue() != "pages") {
+            realPath = selectedItem.getParent().getValue() + "/" + realPath;
+            selectedItem = selectedItem.getParent();
+        }
+
+        TextField pathInput = ((TextField) sc.lookup("#pathInput"));
+        String pathString = pathInput.getText() + "/" + realPath;
+
+        Path path = Paths.get(pathString);
+
+        try {
+            File toDelete = new File(path.toString());
+            if(toDelete.isDirectory()) {
+                File[] list = toDelete.listFiles();
+                if (list != null) {
+                    for (int i = 0; i < list.length; i++) {
+                        Files.delete(list[i].toPath());
+                    }
+                }
+            }
+            Files.delete(path);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        createTreeView(sc, pathInput.getText(), bundle);
+    }
+
+    @FXML
+    private void updateTree(ActionEvent event) {
+        TextField btn = (TextField) event.getSource();
+        Scene sc = btn.getScene();
+        TextField pathInput = ((TextField) sc.lookup("#pathInput"));
+        createTreeView(sc, pathInput.getText(), bundle);
     }
 }

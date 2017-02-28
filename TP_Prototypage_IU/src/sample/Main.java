@@ -63,15 +63,17 @@ public class Main extends Application {
                     btnDelete.setVisible(true);
                 }
                 else { // The selected item is a directory, we hide the buttons
-                    labelPage.setText("");
+                    labelPage.setText(newValue.getValue());
                     btnSee.setVisible(false);
-                    btnDelete.setVisible(false);
+                    btnDelete.setVisible(true);
                 }
             }
         });
 
-        // Path of all pages
         File path = new File(pathGet);
+        if(pathGet.equals("pages"))
+            path = new File(path.getAbsolutePath());
+        // Path of all pages
 
         createTree(path,rootItem);
 
