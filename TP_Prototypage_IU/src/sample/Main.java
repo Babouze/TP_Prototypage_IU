@@ -25,7 +25,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         bundle = ResourceBundle.getBundle("MessagesBundle", new Locale("fr", "FR"));
 
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"), bundle, null, null, Charset.forName("UTF-8"));
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"), bundle);
         primaryStage.setTitle("Crawler");
 
         Scene sc = new Scene(root);

@@ -37,7 +37,7 @@ public class Controller implements Initializable
                     locale = new Locale("fr" , "FR");
                     bundle = ResourceBundle.getBundle("MessagesBundle", locale);
                     try {
-                        sc.setRoot(FXMLLoader.load(getClass().getResource("sample.fxml"), bundle, null, null, Charset.forName("UTF-8")));
+                        sc.setRoot(FXMLLoader.load(getClass().getResource("sample.fxml"), bundle));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -47,7 +47,7 @@ public class Controller implements Initializable
                     locale = new Locale("en" , "US");
                     bundle = ResourceBundle.getBundle("MessagesBundle", locale);
                     try {
-                        sc.setRoot(FXMLLoader.load(getClass().getResource("sample.fxml"), bundle, null, null, Charset.forName("UTF-8")));
+                        sc.setRoot(FXMLLoader.load(getClass().getResource("sample.fxml"), bundle));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -57,7 +57,7 @@ public class Controller implements Initializable
                     locale = new Locale("ch" , "CH");
                     bundle = ResourceBundle.getBundle("MessagesBundle", locale);
                     try {
-                        sc.setRoot(FXMLLoader.load(getClass().getResource("sample.fxml"), bundle, null, null, Charset.forName("UTF-8")));
+                        sc.setRoot(FXMLLoader.load(getClass().getResource("sample.fxml"), bundle));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -80,10 +80,10 @@ public class Controller implements Initializable
 
         if(pathInput.getText().equals(""))
         {
-            ButtonType loginButtonType = new ButtonType(bundle.getString("OK"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType loginButtonType = new ButtonType(new String(bundle.getString("OK").getBytes("ISO-8859-1"), "UTF-8"), ButtonBar.ButtonData.OK_DONE);
             Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle(bundle.getString("error"));
-            dialog.setContentText(bundle.getString("pathError"));
+            dialog.setTitle(new String(bundle.getString("error").getBytes("ISO-8859-1"), "UTF-8"));
+            dialog.setContentText(new String(bundle.getString("pathError").getBytes("ISO-8859-1"), "UTF-8"));
             dialog.getDialogPane().getButtonTypes().add(loginButtonType);
             dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
             dialog.showAndWait();
@@ -91,10 +91,10 @@ public class Controller implements Initializable
         }
         else if(urlInput.getText().equals(""))
         {
-            ButtonType loginButtonType = new ButtonType(bundle.getString("OK"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType loginButtonType = new ButtonType(new String(bundle.getString("OK").getBytes("ISO-8859-1"), "UTF-8"), ButtonBar.ButtonData.OK_DONE);
             Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle(bundle.getString("error"));
-            dialog.setContentText(bundle.getString("urlError"));
+            dialog.setTitle(new String(bundle.getString("error").getBytes("ISO-8859-1"), "UTF-8"));
+            dialog.setContentText(new String(bundle.getString("urlError").getBytes("ISO-8859-1"), "UTF-8"));
             dialog.getDialogPane().getButtonTypes().add(loginButtonType);
             dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
             dialog.showAndWait();
@@ -105,10 +105,10 @@ public class Controller implements Initializable
         String site[] = urlInput.getText().split("/");
         if(site.length < 2)
         {
-            ButtonType loginButtonType = new ButtonType(bundle.getString("OK"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType loginButtonType = new ButtonType(new String(bundle.getString("OK").getBytes("ISO-8859-1"), "UTF-8"), ButtonBar.ButtonData.OK_DONE);
             Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle(bundle.getString("error"));
-            dialog.setContentText(bundle.getString("urlFormatError"));
+            dialog.setTitle(new String(bundle.getString("error").getBytes("ISO-8859-1"), "UTF-8"));
+            dialog.setContentText(new String(bundle.getString("urlFormatError").getBytes("ISO-8859-1"), "UTF-8"));
             dialog.getDialogPane().getButtonTypes().add(loginButtonType);
             dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
             dialog.showAndWait();
@@ -148,8 +148,16 @@ public class Controller implements Initializable
         task.setOnSucceeded(e -> {
             ButtonType loginButtonType = new ButtonType(bundle.getString("OK"), ButtonBar.ButtonData.OK_DONE);
             Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle(bundle.getString("success"));
-            dialog.setContentText(bundle.getString("downloadSuccessfull"));
+            try {
+                dialog.setTitle(new String(bundle.getString("success").getBytes("ISO-8859-1"), "UTF-8"));
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                dialog.setContentText(new String(bundle.getString("downloadSuccessful").getBytes("ISO-8859-1"), "UTF-8"));
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
             dialog.getDialogPane().getButtonTypes().add(loginButtonType);
             dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
 
@@ -159,29 +167,50 @@ public class Controller implements Initializable
             dialog.showAndWait();
         });
         task.setOnFailed(e -> {
-            ButtonType loginButtonType = new ButtonType(bundle.getString("OK"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType loginButtonType = null;
+            try {
+                loginButtonType = new ButtonType(new String(bundle.getString("OK").getBytes("ISO-8859-1"), "UTF-8"), ButtonBar.ButtonData.OK_DONE);
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
             Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle(bundle.getString("error"));
-            dialog.setContentText(bundle.getString("downloadFailed"));
+            try {
+                dialog.setTitle(new String(bundle.getString("error").getBytes("ISO-8859-1"), "UTF-8"));
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                dialog.setContentText(new String(bundle.getString("downloadFailed").getBytes("ISO-8859-1"), "UTF-8"));
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
             dialog.getDialogPane().getButtonTypes().add(loginButtonType);
             dialog.getDialogPane().lookupButton(loginButtonType).setDisable(false);
 
             pb.setVisible(false);
-            btn.setText(bundle.getString("download"));
+            try {
+                btn.setText(new String(bundle.getString("download").getBytes("ISO-8859-1"), "UTF-8"));
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
 
             dialog.showAndWait();
         });
         task.setOnCancelled(e -> {
             //TODO: Effacer le fichier téléchargé et arrêter l'exécution
             pb.setVisible(false);
-            btn.setText(bundle.getString("download"));
+            try {
+                btn.setText(new String(bundle.getString("download").getBytes("ISO-8859-1"), "UTF-8"));
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
         });
 
         Thread thread = new Thread(task);
 
-        if(btn.getText().equals(bundle.getString("download")))
+        if(btn.getText().equals(new String(bundle.getString("download").getBytes("ISO-8859-1"), "UTF-8")))
         {
-            btn.setText(bundle.getString("cancel"));
+            btn.setText(new String(bundle.getString("cancel").getBytes("ISO-8859-1"), "UTF-8"));
             pb.progressProperty().bind(task.progressProperty());
             pb.setVisible(true);
 
