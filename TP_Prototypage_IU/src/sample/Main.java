@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
+
 import java.io.File;
 
 public class Main extends Application {
@@ -20,10 +21,6 @@ public class Main extends Application {
         Scene sc = new Scene(root);
         primaryStage.setScene(sc);
 
-        // ArrayList<Object> files = getArborescence("pages");
-        // displayFiles(files);
-        // System.out.println(files);
-
         createTreeView(sc,"pages");
 
         primaryStage.show();
@@ -34,61 +31,68 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static void createTreeView(Scene sc, String pathGet) {
+    private static void createTreeView(Scene sc, String pathGet) {
 
         TreeItem<String> rootItem = createLine("Bibliothèque");
         TreeView<String> tree = new TreeView<>(rootItem);
 
-        tree.setPrefSize(475, 200);
+        tree.setPrefSize(475,200);
 
-        File repo = new File(pathGet);
+        // Path of all pages
+        File path = new File(pathGet);
 
-        File[] fileList = repo.listFiles();
-
-        if(fileList != null) {
-            TreeItem<String> mainLine;
-
-            for(int i = 0 ; i < fileList.length ; i++) {
-                String nameFile = fileList[i].toString();
-
-                mainLine = createLine(nameFile);
-
-                rootItem.getChildren().add(mainLine);
-
-                // If the file has children
-                if(getArbo(nameFile)) {
-                    // createTreeView(sc,nameFile);
-                    TreeItem<String> item = new TreeItem<>("Children here");
-                    mainLine.getChildren().add(item);
-                }
-
-            }
-        }
-
-        /*
-            TreeItem<String> subLine1 = createLine("index.html");
-            TreeItem<String> subLine2 = createLine("index2.html");
-
-            TreeItem<String> item = new TreeItem<>("Message 1");
-            subLine1.getChildren().add(item);
-        */
-
-
+        createTree(path,rootItem);
 
         Pane pane = (Pane) sc.lookup("#paneTreeView");
-
         pane.getChildren().add(tree);
     }
 
-    public static TreeItem<String> createLine(String val) {
+    private static TreeItem<String> createLine(String val) {
         TreeItem<String> item = new TreeItem<>(val);
         item.setExpanded(true);
-
         return item;
     }
 
-    private static boolean getArbo(String path) {
-        return true;
+    private static void createTree(File path, TreeItem<String> root) {
+
+        if(path.isDirectory()) {
+            // Directory
+
+            // Getting the name of the directory
+            String name = getNameOfPage(path.toString());
+
+
+            // Creating a new root inside the tree
+            TreeItem<String> newRoot = new TreeItem<>(name);
+            root.getChildren().add(newRoot);
+
+            File[] list = path.listFiles();
+            if (list != null) {
+                for (int i = 0; i < list.length; i++) {
+                    createTree(list[i],newRoot);
+                }
+            }
+        }
+        else {
+            // Getting the name of the page
+            String name = getNameOfPage(path.toString());
+
+            // Simple line
+            TreeItem<String> newItem = new TreeItem<>(name);
+            root.getChildren().add(newItem);
+        }
+
+    }
+
+    private static String getNameOfPage(String path) {
+        String[] dir = path.split("/");
+        String name = "";
+        if (dir != null) {
+            for (int i = 0; i < dir.length; i++) {
+                name = dir[i];
+            }
+        }
+        return name;
     }
 
 }
